@@ -1,4 +1,4 @@
-# 서비스 GitOps 관리를 위한 Application 설정
+# Argo Workflows GitOps 관리를 위한 Application 설정
 # Argo CD가 Rapid 서비스 저장소를 어떻게 관리할지 정의하는 매니페스트
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -8,16 +8,13 @@ metadata:
  labels:
    app.kubernetes.io/name: rapid-services
    app.kubernetes.io/part-of: rapid-platform
-   app.kubernetes.io/component: services
+   app.kubernetes.io/component: core
  annotations:
-   description: "Rapid Platform의 서비스 컴포넌트 GitOps 관리"
+   description: "Rapid Platform의 서비스 구성 관리"
 spec:
- # 프로젝트 설정
- project: rapid-application
-
  # 소스 저장소 설정
  source:
-   # 서비스 컴포넌트가 포함된 Git 저장소 URL
+   # 서비스 정의가 포함된 Git 저장소 URL
    repoURL: https://github.com/devteam-rapid/rapid-services-repo
    # 동기화할 브랜치/태그
    targetRevision: HEAD
@@ -27,10 +24,6 @@ spec:
    directory:
      # 모든 하위 디렉토리 포함
      recurse: true
-     # apps와 scripts 디렉토리만 GitOps 관리
-     include: '{apps/*,scripts/*}'
-     # 나머지 디렉토리는 제외
-     exclude: '*'
 
  # 대상 클러스터 설정  
  destination:
