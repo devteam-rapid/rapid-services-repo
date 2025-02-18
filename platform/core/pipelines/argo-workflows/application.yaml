@@ -24,9 +24,6 @@ spec:
    directory:
      # 모든 하위 디렉토리 포함
      recurse: true
-     # templates 디렉토리는 GitOps 관리에서 제외
-     # 수동 업데이트를 허용하기 위해 별도 관리
-     exclude: "templates/*"
 
  # 대상 클러스터 설정
  destination:
