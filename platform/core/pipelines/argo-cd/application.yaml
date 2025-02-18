@@ -1,4 +1,4 @@
-# Argo Workflows GitOps 관리를 위한 Application 설정
+# Services GitOps 관리를 위한 Application 설정
 # Argo CD가 Rapid 서비스 저장소를 어떻게 관리할지 정의하는 매니페스트
 apiVersion: argoproj.io/v1alpha1
 kind: Application
