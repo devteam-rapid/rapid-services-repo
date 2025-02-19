@@ -1,0 +1,25 @@
+# Argo Workflows Webhook을 위한 Traefik IngressRoute 설정
+# 외부에서 들어오는 webhook 요청을 Argo Workflows 서버로 라우팅하는 설정
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: rapid-workflow-webhook
+  namespace: pipeline-system
+  # 리소스 식별 및 그룹화를 위한 레이블
+  labels:
+    app.kubernetes.io/name: rapid-workflow-webhook
+    app.kubernetes.io/part-of: rapid-platform
+    app.kubernetes.io/component: ingress
+spec:
+  # HTTP 엔드포인트 설정
+  entryPoints:
+    - web
+  # 라우팅 규칙 설정
+  routes:
+    # webhook.rkddmscks.site로 들어오는 요청 처리
+    - match: Host(`webhook.rkddmscks.site`)
+      kind: Rule
+      # Argo Workflows 서버로 요청 전달
+      services:
+        - name: argo-workflows-server
+          port: 2746
