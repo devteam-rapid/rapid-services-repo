@@ -14,6 +14,7 @@ spec:
   # HTTP 엔드포인트 설정
   entryPoints:
     - web
+    - websecure
   # 라우팅 규칙 설정
   routes:
     # webhook.rkddmscks.site로 들어오는 요청 처리
