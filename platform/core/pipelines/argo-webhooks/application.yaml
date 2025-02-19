@@ -23,7 +23,7 @@ spec:
     # 동기화할 브랜치
     targetRevision: main
     # 저장소 내 설정 파일 경로
-    path: workflow-webhook
+    path: platform/core/pipelines/argo-webhooks
   # 대상 클러스터 설정
   destination:
     # 현재 클러스터 대상
