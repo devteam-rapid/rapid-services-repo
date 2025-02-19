@@ -12,7 +12,7 @@ metadata:
  annotations:
    description: "Rapid Platform의 Argo Workflows 구성 관리"
 spec:
- project: default
+ project: rapid-application
  # 소스 저장소 설정
  source:
    # 워크플로우 정의가 포함된 Git 저장소 URL
