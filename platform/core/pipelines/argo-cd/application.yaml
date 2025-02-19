@@ -3,48 +3,50 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
- name: rapid-services
- namespace: pipeline-system
- labels:
-   app.kubernetes.io/name: rapid-services
-   app.kubernetes.io/part-of: rapid-platform
-   app.kubernetes.io/component: core
- annotations:
-   description: "Rapid Platform의 서비스 구성 관리"
+  name: rapid-services
+  namespace: pipeline-system
+  labels:
+    app.kubernetes.io/name: rapid-services
+    app.kubernetes.io/part-of: rapid-platform
+    app.kubernetes.io/component: core
+  annotations:
+    description: "Rapid Platform의 서비스 구성 관리"
 spec:
- project: default
- # 소스 저장소 설정
- source:
-   # 서비스 정의가 포함된 Git 저장소 URL
-   repoURL: https://github.com/devteam-rapid/rapid-services-repo
-   # 동기화할 브랜치/태그
-   targetRevision: main
-   # 저장소 내 경로
-   path: .
-   # 디렉토리 처리 설정
-   directory:
-     # 모든 하위 디렉토리 포함
-     recurse: true
+  project: default
+  # 소스 저장소 설정
+  source:
+    # 서비스 정의가 포함된 Git 저장소 URL
+    repoURL: https://github.com/devteam-rapid/rapid-services-repo
+    # 동기화할 브랜치/태그
+    targetRevision: main
+    # 저장소 내 경로
+    path: .
+    # 디렉토리 처리 설정
+    directory:
+      # 모든 하위 디렉토리 포함
+      recurse: true
+      # webhook 관련 디렉토리 제외
+      exclude: "platform/core/pipelines/argo-webhooks/*"
 
- # 대상 클러스터 설정  
- destination:
-   # 현재 클러스터 대상
-   server: https://kubernetes.default.svc
-   # pipeline-system 네임스페이스에 배포
-   namespace: pipeline-system
+  # 대상 클러스터 설정  
+  destination:
+    # 현재 클러스터 대상
+    server: https://kubernetes.default.svc
+    # pipeline-system 네임스페이스에 배포
+    namespace: pipeline-system
 
- # 동기화 정책 설정
- syncPolicy:
-   automated:
-     # Git에 없는 리소스 자동 삭제
-     prune: true
-     # 클러스터 상태가 Git과 다를 때 자동 동기화
-     selfHeal: true
-   # 추가 동기화 옵션    
-   syncOptions:
-     # 네임스페이스가 없으면 생성
-     - CreateNamespace=true
-     # 리소스 삭제 전 완료 대기
-     - PrunePropagationPolicy=foreground
-     # 새 리소스 준비 완료 후 삭제 진행
-     - PruneLast=true
+  # 동기화 정책 설정
+  syncPolicy:
+    automated:
+      # Git에 없는 리소스 자동 삭제
+      prune: true
+      # 클러스터 상태가 Git과 다를 때 자동 동기화
+      selfHeal: true
+    # 추가 동기화 옵션    
+    syncOptions:
+      # 네임스페이스가 없으면 생성
+      - CreateNamespace=true
+      # 리소스 삭제 전 완료 대기
+      - PrunePropagationPolicy=foreground
+      # 새 리소스 준비 완료 후 삭제 진행
+      - PruneLast=true
