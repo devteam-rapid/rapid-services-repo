@@ -18,7 +18,7 @@ spec:
    # 서비스 정의가 포함된 Git 저장소 URL
    repoURL: https://github.com/devteam-rapid/rapid-services-repo
    # 동기화할 브랜치/태그
-   targetRevision: HEAD
+   targetRevision: main
    # 저장소 내 경로
    path: .
    # 디렉토리 처리 설정
