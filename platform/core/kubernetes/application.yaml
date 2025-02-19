@@ -1,0 +1,50 @@
+# Rapid Platform의 Kubernetes 리소스 관리를 위한 Application 설정
+# Argo CD가 K8s 리소스 저장소를 어떻게 관리할지 정의하는 매니페스트
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # Application의 이름과 네임스페이스 설정
+  name: rapid-k8s-resources
+  namespace: pipeline-system
+  # 리소스 식별을 위한 레이블
+  labels:
+    app.kubernetes.io/name: rapid-k8s-resources
+    app.kubernetes.io/part-of: rapid-platform
+    app.kubernetes.io/component: resource-management
+  # 리소스에 대한 설명 
+  annotations:
+    description: "Rapid Platform의 Kubernetes 리소스 관리"
+spec:
+  # Argo CD 프로젝트 설정
+  project: rapid-application
+  # 소스 저장소 설정
+  source:
+    # K8s 리소스 정의가 포함된 Git 저장소 URL
+    repoURL: https://github.com/devteam-rapid/rapid-k8s-resource-repo.git
+    # 동기화할 브랜치/태그 (최신 커밋)
+    targetRevision: main
+    # 저장소 내 경로
+    path: .
+    # 디렉토리 처리 설정
+    directory:
+      # 모든 하위 디렉토리 포함
+      recurse: true
+  # 대상 클러스터 설정  
+  destination:
+    # 현재 클러스터 대상
+    server: https://kubernetes.default.svc
+  # 동기화 정책 설정
+  syncPolicy:
+    automated:
+      # Git에 없는 리소스 자동 삭제
+      prune: true
+      # 클러스터 상태가 Git과 다를 때 자동 동기화
+      selfHeal: true
+    # 추가 동기화 옵션  
+    syncOptions:
+      # 네임스페이스가 없으면 생성
+      - CreateNamespace=true
+      # 리소스 삭제 전 완료 대기
+      - PrunePropagationPolicy=foreground
+      # 새 리소스 준비 완료 후 삭제 진행
+      - PruneLast=true
