@@ -20,12 +20,11 @@ spec:
     # 동기화할 브랜치/태그
     targetRevision: main
     # 저장소 내 경로
-    path: .
+    path: ./platform
     # 디렉토리 처리 설정
     directory:
       # 모든 하위 디렉토리 포함
       recurse: true
-      exclude: "**/template.json"
 
   # 대상 클러스터 설정  
   destination:
