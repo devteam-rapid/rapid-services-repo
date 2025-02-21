@@ -23,8 +23,9 @@ spec:
     path: .
     # 디렉토리 처리 설정
     directory:
-      # 모든 하위 디렉토리 포함
+      # template.json을 제외한 모든 하위 디렉토리 포함
       recurse: true
+      exclude: '**/template.json'
 
   # 대상 클러스터 설정  
   destination:
