@@ -3,10 +3,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: rapid-apps
+  name: rapid-services
   namespace: pipeline-system
   labels:
-    app.kubernetes.io/name: rapid-apps
+    app.kubernetes.io/name: rapid-services
     app.kubernetes.io/part-of: rapid-platform
     app.kubernetes.io/component: core
 spec:
