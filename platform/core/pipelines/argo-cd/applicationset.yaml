@@ -18,8 +18,8 @@ spec:
      revision: main
      # 애플리케이션 디렉토리 패턴 지정
      directories:
-     - path: apps/*/prod
-     - path: apps/*/stag
+     - path: apps/*/prod/manifests
+     - path: apps/*/stag/manifests
  
  # 각 애플리케이션 생성을 위한 템플릿
  template:
