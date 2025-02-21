@@ -25,6 +25,12 @@ spec:
     directory:
       # 모든 하위 디렉토리 포함
       recurse: true
+      exclude: |
+        # 특정 디렉토리 제외
+        - .git
+        - .github
+        - .gitignore
+        - templates
 
   # 대상 클러스터 설정  
   destination:
