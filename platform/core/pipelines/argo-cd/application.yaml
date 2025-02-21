@@ -25,15 +25,14 @@ spec:
     directory:
       # 모든 하위 디렉토리 포함
       recurse: true
-      exclude: ".git,.github,.gitignore,templates"
-      
-  # 대상 클러스터 설정  
+      # apps와 platform 디렉토리만 포함
+      include: "apps/*,platform/*"
+  # 대상 클러스터 설정
   destination:
     # 현재 클러스터 대상
     server: https://kubernetes.default.svc
     # pipeline-system 네임스페이스에 배포
     namespace: pipeline-system
-
   # 동기화 정책 설정
   syncPolicy:
     automated:
@@ -41,7 +40,7 @@ spec:
       prune: true
       # 클러스터 상태가 Git과 다를 때 자동 동기화
       selfHeal: true
-    # 추가 동기화 옵션    
+    # 추가 동기화 옵션
     syncOptions:
       # 네임스페이스가 없으면 생성
       - CreateNamespace=true
