@@ -16,9 +16,6 @@ spec:
         repoURL: https://github.com/devteam-rapid/rapid-services-repo.git
         # 동기화할 브랜치/태그
         revision: main
-        # 인증 정보를 가진 시크릿 참조 - 이 부분이 빠져있었습니다
-        secretRef:
-          name: rapid-services-repo
         # 애플리케이션 디렉토리 패턴 지정
         directories:
           - path: apps/*/prod/manifests
