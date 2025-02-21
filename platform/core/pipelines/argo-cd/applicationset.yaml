@@ -6,9 +6,9 @@ metadata:
   name: rapid-apps
   namespace: pipeline-system
   labels:
-    app.kubernetes.io/component: core
+    app.kubernetes.io/name: rapid-apps
     app.kubernetes.io/part-of: rapid-platform
-    argocd.argoproj.io/instance: rapid-services
+    app.kubernetes.io/component: core
 spec:
   generators:
     - git:
