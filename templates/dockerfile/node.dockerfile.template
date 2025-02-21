@@ -1,0 +1,22 @@
+FROM node:${node_version} AS build
+
+ENV TZ=Asia/Seoul
+WORKDIR /app
+
+COPY package*.json ./
+RUN --mount=type=cache,target=/root/.npm ${init_commands}
+
+COPY . .
+RUN --mount=type=cache,target=/root/.npm ${build_commands}
+
+FROM node:${node_version}-slim
+
+ENV TZ=Asia/Seoul
+WORKDIR /app
+
+COPY --from=build /app${output_dir} .
+COPY --from=build /app/package*.json ./
+
+ENV NODE_ENV=${node_env}
+EXPOSE ${port}
+CMD ${start_command}

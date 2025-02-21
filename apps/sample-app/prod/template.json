@@ -1,0 +1,10 @@
+{
+    "type": "node",
+    "node_version": "23-alpine",
+    "init_commands": "npm ci",
+    "build_commands": "npm run build",
+    "output_dir": "/dist",
+    "port": "8080",
+    "node_env": "production",
+    "start_command": "npm start"
+}

@@ -1,0 +1,24 @@
+FROM ${jdk_dist}:${jdk_version} AS build
+
+ENV TZ=Asia/Seoul
+WORKDIR /app
+
+COPY ${build_file} settings.${build_file} ./
+COPY gradle/ ./gradle/
+RUN chmod +x ./gradlew
+
+RUN --mount=type=cache,target=${cache_path} ${init_commands}
+
+COPY . .
+RUN --mount=type=cache,target=${cache_path} ${build_commands}
+
+FROM ${jdk_dist}:${jdk_version}
+
+ENV TZ=Asia/Seoul
+WORKDIR /app
+
+COPY --from=build /app${output_dir} /app.jar
+
+ENV JAVA_OPTS="${java_opts}"
+EXPOSE ${port}
+ENTRYPOINT ["java", "-jar", "/app.jar"]
