@@ -25,6 +25,7 @@ spec:
     directory:
       # 모든 하위 디렉토리 포함
       recurse: true
+      exclude: "**/template.json"
 
   # 대상 클러스터 설정  
   destination:
