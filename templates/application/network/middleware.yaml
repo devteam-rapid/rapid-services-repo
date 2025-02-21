@@ -1,0 +1,26 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Values.appName }}-ratelimit
+  namespace: {{ .Values.appName }}
+spec:
+  rateLimit:
+    average: 200
+    burst: 200
+    period: 90s
+    sourceCriterion:
+      ipStrategy:
+        depth: 1
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Values.appName }}-buffering
+  namespace: {{ .Values.appName }}
+spec:
+  buffering:
+    maxRequestBodyBytes: 90000
+    memRequestBodyBytes: 90000
+    maxResponseBodyBytes: 90000
+    memResponseBodyBytes: 90000
+    retryExpression: "IsNetworkError()"

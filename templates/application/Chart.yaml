@@ -1,0 +1,6 @@
+apiVersion: v2
+name: applications
+description: K8s에 배포하기 위한 Helm 차트
+type: application
+version: 0.1.0
+appVersion: 1.16.0
