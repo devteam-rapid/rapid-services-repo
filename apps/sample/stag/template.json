@@ -5,6 +5,6 @@
     "build_commands": "npm run build",
     "output_dir": "dist",
     "port": "3000",
-    "node_env": "production",
+    "node_env": "staging",
     "start_command": "npm start"
 }
