@@ -3,56 +3,59 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: rapid-apps
-  namespace: pipeline-system
-  labels:
-    app.kubernetes.io/name: rapid-apps
-    app.kubernetes.io/part-of: rapid-platform
-    app.kubernetes.io/component: core
+ name: rapid-apps
+ namespace: pipeline-system
+ labels:
+   app.kubernetes.io/name: rapid-apps
+   app.kubernetes.io/part-of: rapid-platform
+   app.kubernetes.io/component: core
 spec:
-  generators:
-    - git:
-        # 배포할 서비스 코드가 있는 Git 저장소
-        repoURL: https://github.com/devteam-rapid/rapid-services-repo.git
-        # 동기화할 브랜치/태그
-        revision: main
-        # 애플리케이션 디렉토리 패턴 지정
-        directories:
-          - path: apps/*/prod
-          - path: apps/*/stag
-  # 각 애플리케이션 생성을 위한 템플릿
-  template:
-    metadata:
-      # 애플리케이션 이름 형식: [앱이름]-[환경]
-      name: '{{path[1]}}-{{path[2]}}'
-      labels:
-        app.kubernetes.io/name: '{{path[1]}}-{{path[2]}}'
-        app.kubernetes.io/part-of: rapid-services
-    spec:
-      # 적용할 ArgoCD 프로젝트
-      project: rapid-application
-      # 소스 저장소 설정
-      source:
-        # 서비스 코드가 있는 저장소
-        repoURL: https://github.com/devteam-rapid/rapid-services-repo.git
-        # 사용할 브랜치/태그
-        targetRevision: main
-        # 애플리케이션 경로
-        path: '{{path}}'
-      # 배포 대상 설정
-      destination:
-        # 대상 클러스터
-        server: https://kubernetes.default.svc
-        # 대상 네임스페이스: [앱이름]-[환경]
-        namespace: '{{path[1]}}-{{path[2]}}'
-      # 동기화 정책 설정
-      syncPolicy:
-        automated:
-          # Git에 없는 리소스 자동 삭제
-          prune: true
-          # 클러스터 상태가 Git과 다를 때 자동 동기화
-          selfHeal: true
-        # 추가 동기화 옵션
-        syncOptions:
-          # 네임스페이스가 없으면 생성
-          - CreateNamespace=true
+ generators:
+   - git:
+       # 배포할 서비스 코드가 있는 Git 저장소
+       repoURL: https://github.com/devteam-rapid/rapid-services-repo.git
+       # 동기화할 브랜치/태그
+       revision: main
+       # GitHub 인증을 위한 시크릿 참조
+       secretRef:
+         name: github-token
+       # 애플리케이션 디렉토리 패턴 지정
+       directories:
+         - path: apps/*/prod
+         - path: apps/*/stag
+ # 각 애플리케이션 생성을 위한 템플릿
+ template:
+   metadata:
+     # 애플리케이션 이름 형식: [앱이름]-[환경]
+     name: '{{path[1]}}-{{path[2]}}'
+     labels:
+       app.kubernetes.io/name: '{{path[1]}}-{{path[2]}}'
+       app.kubernetes.io/part-of: rapid-services
+   spec:
+     # 적용할 ArgoCD 프로젝트
+     project: rapid-application
+     # 소스 저장소 설정
+     source:
+       # 서비스 코드가 있는 저장소
+       repoURL: https://github.com/devteam-rapid/rapid-services-repo.git
+       # 사용할 브랜치/태그
+       targetRevision: main
+       # 애플리케이션 경로
+       path: '{{path}}'
+     # 배포 대상 설정
+     destination:
+       # 대상 클러스터
+       server: https://kubernetes.default.svc
+       # 대상 네임스페이스: [앱이름]-[환경]
+       namespace: '{{path[1]}}-{{path[2]}}'
+     # 동기화 정책 설정
+     syncPolicy:
+       automated:
+         # Git에 없는 리소스 자동 삭제
+         prune: true
+         # 클러스터 상태가 Git과 다를 때 자동 동기화
+         selfHeal: true
+       # 추가 동기화 옵션
+       syncOptions:
+         # 네임스페이스가 없으면 생성
+         - CreateNamespace=true
