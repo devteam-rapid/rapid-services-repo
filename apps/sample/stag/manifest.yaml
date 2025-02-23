@@ -1,0 +1,145 @@
+---
+# Source: applications/templates/service-account.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-stag-service
+  namespace: sample-stag
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: sample-stag
+  type: ClusterIP
+---
+# Source: applications/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-stag-service
+  namespace: sample-stag
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: sample-stag
+  type: ClusterIP
+---
+# Source: applications/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-stag
+  namespace: sample-stag
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: sample-stag
+  template:
+    metadata:
+      labels:
+        app: sample-stag
+    spec:
+      serviceAccountName: sample-stag-account
+      containers:
+        - name: sample-stag
+          image: registry.rkddmscks.site/sample-stag:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: sample-stag
+      imagePullSecrets:
+        - name: imagepullsecret
+---
+# Source: applications/templates/ingressroute.yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: sample-stag-ingressroute
+  namespace: sample-stag
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`sample-stag.rkddmscks.site`)
+      kind: Rule
+      services:
+        - name: sample-stag-service
+          port: 80
+      middlewares:
+        - name: sample-stag-ratelimit
+        - name: sample-stag-buffering
+---
+# Source: applications/templates/middleware.yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: sample-stag-ratelimit
+  namespace: sample-stag
+spec:
+  rateLimit:
+    average: 200
+    burst: 200
+    period: 90s
+    sourceCriterion:
+      ipStrategy:
+        depth: 1
+---
+# Source: applications/templates/middleware.yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: sample-stag-buffering
+  namespace: sample-stag
+spec:
+  buffering:
+    maxRequestBodyBytes: 90000
+    memRequestBodyBytes: 90000
+    maxResponseBodyBytes: 90000
+    memResponseBodyBytes: 90000
+    retryExpression: "IsNetworkError()"
+---
+# Source: applications/templates/vault-auth.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: sample-stag-auth
+  namespace: sample-stag
+spec:
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: injunweb-role
+    serviceAccount: sample-stag-account
+    audiences:
+      - vault
+---
+# Source: applications/templates/vault-static-secret.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: sample-stag-secret
+  namespace: sample-stag
+spec:
+  type: kv-v1
+  mount: injunweb-kv
+  path: sample-stag
+  destination:
+    name: sample-stag
+    create: true
+  vaultAuthRef: sample-stag/sample-stag-auth
+  refreshAfter: 1m
+  rolloutRestartTargets:
+    - kind: Deployment
+      name: sample-stag

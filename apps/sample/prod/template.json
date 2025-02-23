@@ -1,4 +1,5 @@
 {
+    "host": "sample-prod.rkddmscks.site",
     "type": "node",
     "node_version": "23",
     "init_commands": "npm install",
