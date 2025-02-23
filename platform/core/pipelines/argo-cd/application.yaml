@@ -23,11 +23,8 @@ spec:
     path: ./platform
     # 디렉토리 처리 설정
     directory:
-      # template 하위 폴더에 있는 파일과, .json 파일을 제외한 모든 하위 디렉토리 포함
+      # Platform 하위 모든 디렉토리 포함
       recurse: true
-      exclude:
-        - "*.json"
-        - "template/*"
   # 대상 클러스터 설정
   destination:
     # 현재 클러스터 대상
