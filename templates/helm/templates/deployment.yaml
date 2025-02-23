@@ -22,7 +22,7 @@ spec:
       serviceAccountName: {{ .Values.appName }}-account
       containers:
         - name: {{ .Values.appName }}
-          image: registry.rkddmscks.site{{ .Values.appName }}:{{ .Values.imageTag }}
+          image: registry.rkddmscks.site/{{ .Values.appName }}:{{ .Values.imageTag }}
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.port }}
