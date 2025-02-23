@@ -20,7 +20,7 @@ spec:
     # 동기화할 브랜치/태그
     targetRevision: main
     # 저장소 내 경로
-    path: .
+    path: ./platform
     # 디렉토리 처리 설정
     directory:
       # template 하위 폴더에 있는 파일과, .json 파일을 제외한 모든 하위 디렉토리 포함
