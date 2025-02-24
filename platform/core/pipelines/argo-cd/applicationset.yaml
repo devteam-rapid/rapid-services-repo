@@ -43,7 +43,7 @@ spec:
        # 애플리케이션 경로
        path: '{{path}}'
        directory:
-        exclude: '**/*.json'
+        exclude: 'template.json'
      # 배포 대상 설정
      destination:
        # 대상 클러스터
