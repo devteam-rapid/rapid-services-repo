@@ -14,7 +14,7 @@ FROM node:23-slim
 ENV TZ=Asia/Seoul
 WORKDIR /app
 
-COPY --from=build /appdist .
+COPY --from=build /app/dist .
 COPY --from=build /app/package*.json ./
 
 ENV NODE_ENV=staging

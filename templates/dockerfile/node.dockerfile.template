@@ -14,7 +14,7 @@ FROM node:${node_version}-slim
 ENV TZ=Asia/Seoul
 WORKDIR /app
 
-COPY --from=build /app${output_dir} .
+COPY --from=build /app/${output_dir} .
 COPY --from=build /app/package*.json ./
 
 ENV NODE_ENV=${node_env}
