@@ -24,7 +24,7 @@ spec:
          - path: apps/*/prod
          - path: apps/*/stag
        files:
-         - path: "*.json"
+         - path: "**/*.json"
            exclude: true
  # 각 애플리케이션 생성을 위한 템플릿
  template:
