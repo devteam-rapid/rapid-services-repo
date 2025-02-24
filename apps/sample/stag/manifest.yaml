@@ -1,4 +1,13 @@
 ---
+# Source: applications/templates/service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sample-stag-account
+  namespace: sample
+  labels:
+    app: sample-stag
+---
 # Source: applications/templates/service.yaml
 apiVersion: v1
 kind: Service
@@ -106,7 +115,7 @@ spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
-    role: injunweb-role
+    role: sample-stag-role
     serviceAccount: sample-stag-account
     audiences:
       - vault
@@ -118,8 +127,8 @@ metadata:
   name: sample-stag-secret
   namespace: sample
 spec:
-  type: kv-v1
-  mount: injunweb-kv
+  type: kv-v2
+  mount: rapid
   path: sample-stag
   destination:
     name: sample-stag
