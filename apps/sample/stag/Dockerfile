@@ -1,4 +1,4 @@
-FROM node:23-alpine AS build
+FROM node:23 AS build
 
 ENV TZ=Asia/Seoul
 WORKDIR /app
@@ -9,7 +9,7 @@ RUN --mount=type=cache,target=/root/.npm npm install
 COPY . .
 RUN --mount=type=cache,target=/root/.npm npm run build
 
-FROM node:23
+FROM node:23-slim
 
 ENV TZ=Asia/Seoul
 WORKDIR /app
