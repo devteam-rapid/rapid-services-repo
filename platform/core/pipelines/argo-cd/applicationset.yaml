@@ -16,7 +16,9 @@ spec:
        repoURL: https://github.com/devteam-rapid/rapid-services-repo.git
        # 동기화할 브랜치/태그
        revision: main
-       insecure: false
+       # GitHub 인증을 위한 시크릿 참조
+       secretRef:
+         name: github-token
        # 애플리케이션 디렉토리 패턴 지정
        directories:
          - path: apps/*/prod
