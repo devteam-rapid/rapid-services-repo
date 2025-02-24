@@ -2,7 +2,7 @@ apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
   name: {{ .Values.appName }}-auth
-  namespace: {{ .Values.appName }}
+  namespace: {{ .Values.namespace }}
 spec:
   method: kubernetes
   mount: kubernetes
