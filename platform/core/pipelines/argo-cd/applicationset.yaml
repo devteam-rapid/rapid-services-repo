@@ -22,7 +22,9 @@ spec:
        # 애플리케이션 디렉토리 패턴 지정
        directories:
          - path: apps/*/prod
+           exclude: "**/*.json"
          - path: apps/*/stag
+           exclude: "**/*.json"
  # 각 애플리케이션 생성을 위한 템플릿
  template:
    metadata:
