@@ -21,11 +21,8 @@ spec:
          name: github-token
        # 애플리케이션 디렉토리 패턴 지정
        directories:
-         - path: apps/*/prod
-         - path: apps/*/stag
-       files:
-         - path: "**/*.json"
-           exclude: true
+         - path: apps/*/prod/manifest.yaml
+         - path: apps/*/stag/manifest.yaml
  # 각 애플리케이션 생성을 위한 템플릿
  template:
    metadata:
