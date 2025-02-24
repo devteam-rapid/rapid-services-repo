@@ -22,9 +22,7 @@ spec:
        # 애플리케이션 디렉토리 패턴 지정
        directories:
          - path: apps/*/prod
-           exclude: "**/*.json"
          - path: apps/*/stag
-           exclude: "**/*.json"
  # 각 애플리케이션 생성을 위한 템플릿
  template:
    metadata:
@@ -44,6 +42,8 @@ spec:
        targetRevision: main
        # 애플리케이션 경로
        path: '{{path}}'
+       directory:
+        exclude: '**/*.json'
      # 배포 대상 설정
      destination:
        # 대상 클러스터
