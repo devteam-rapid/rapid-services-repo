@@ -47,7 +47,7 @@ spec:
        # 대상 클러스터
        server: https://kubernetes.default.svc
        # 대상 네임스페이스: [앱이름]-[환경]
-       namespace: '{{path[1]}}-{{path[2]}}'
+       namespace: '{{path[1]}}'
      # 동기화 정책 설정
      syncPolicy:
        automated:
